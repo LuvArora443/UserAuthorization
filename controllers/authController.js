@@ -88,3 +88,17 @@ module.exports.logout_get = (req,res) => {
   res.cookie('jwt', '', {maxAge: 1});
   res.redirect('/');
 }
+
+module.exports.getUserInfo = async (req, res) => {
+  try {
+    // Ensure that req.user is not null
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const user = await User.findById(req.user.id);
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
