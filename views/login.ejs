@@ -1,22 +1,23 @@
 <%- include('partials/header'); -%>
 
-<form action="/login">
+<form id="loginForm" action="/login" method="POST">
   <h2>Login</h2>
   <label for="email">Email</label>
-  <input type="text" name="email"  />
+  <input type="text" id="email" name="email" />
   <div class="email error"></div>
   <label for="password">Password</label>
-  <input type="password" name="password"  />
+  <input type="password" id="password" name="password" />
   <label for="otp">OTP</label>
-  <input type="number" name="otp"  />
+  <input type="number" id="otp" name="otp" />
+  <!-- <div class="otp error"></div> -->
   <div class="password error"></div>
-  <button>login</button>
+  <button type="submit">Login</button>
 </form>
 
 <%- include('partials/footer'); -%>
 
 <script>
-  const form = document.querySelector('form');
+  const form = document.getElementById('loginForm');
   const emailError = document.querySelector('.email.error');
   const passwordError = document.querySelector('.password.error');
 
@@ -30,11 +31,12 @@
     // get values
     const email = form.email.value;
     const password = form.password.value;
+    const otp = form.otp.value;
 
     try {
       const res = await fetch('/login', { 
         method: 'POST', 
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, otp }),
         headers: {'Content-Type': 'application/json'}
       });
       const data = await res.json();
@@ -44,7 +46,8 @@
         passwordError.textContent = data.errors.password;
       }
       if (data.user) {
-        location.assign('/');
+        // Redirect to the details page
+        location.assign('/details');
       }
 
     }
