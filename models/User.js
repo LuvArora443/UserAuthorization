@@ -18,14 +18,34 @@ const userSchema = new mongoose.Schema({
 });
 
 
-// fire a function before doc saved to db
+// Model for storing user details
+const detailsSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    ref: 'User'
+  },
+  location: {
+    type: String,
+    required: [true, 'Please enter your location']
+  },
+  age: {
+    type: Number,
+    required: [true, 'Please enter your age']
+  },
+  work: {
+    type: String,
+    required: [true, 'Please enter your work details']
+  }
+});
+
+const Details = mongoose.model('Details', detailsSchema);
+
 userSchema.pre('save', async function(next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// static method to login user
 userSchema.statics.login = async function(email, password) {
   const user = await this.findOne({ email });
   if (user) {
@@ -38,6 +58,6 @@ userSchema.statics.login = async function(email, password) {
   throw Error('incorrect email');
 };
 
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = { User, Details };
