@@ -1,0 +1,54 @@
+<%- include('partials/header'); -%>
+
+<form id="loginForm" action="/login2" method="POST">
+  <h2>Login</h2>
+  <label for="email">Email</label>
+  <input type="text" id="email" name="email" />
+  <div class="email error"></div>
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" />
+  <div class="password error"></div>
+  <button type="submit">Login</button>
+</form>
+
+<%- include('partials/footer'); -%>
+
+<script>
+  const form = document.getElementById('loginForm');
+  const emailError = document.querySelector('.email.error');
+  const passwordError = document.querySelector('.password.error');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // reset errors
+    emailError.textContent = '';
+    passwordError.textContent = '';
+
+    // get values
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const res = await fetch('/login2', { 
+        method: 'POST', 
+        body: JSON.stringify({ email, password }),
+        headers: {'Content-Type': 'application/json'}
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+      }
+      if (data.user) {
+        // Redirect to the details page
+        location.assign('/');
+      }
+
+    }
+    catch (err) {
+      console.log(err);
+    }
+  });
+</script>
