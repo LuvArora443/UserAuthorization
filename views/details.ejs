@@ -1,0 +1,44 @@
+<%- include('partials/header'); -%>
+
+<form id="detailsForm" action="/details" method="POST">
+  <h2>Add Details</h2>
+  <label for="location">Location</label>
+  <input type="text" id="location" name="location" required />
+  <label for="age">Age</label>
+  <input type="number" id="age" name="age" required />
+  <label for="work">Work Details</label>
+  <input type="text" id="work" name="work" required />
+  <button type="submit">Add Details</button>
+</form>
+
+<%- include('partials/footer'); -%>
+
+   <script>
+    const form = document.getElementById('detailsForm');
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const location = form.location.value;
+      const age = form.age.value;
+      const work = form.work.value;
+  
+      try {
+        const res = await fetch('/details', {
+          method: 'POST',
+          body: JSON.stringify({ location, age, work }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+  
+        if (res.ok) {
+          window.location.href = '/'; // Redirect to home page after adding details
+          window.history.replaceState(null, null, '/'); // Replace current URL with home page URL
+        } else {
+          console.error('Failed to add details');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    });
+  </script>
+  
