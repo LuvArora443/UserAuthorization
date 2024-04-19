@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session')
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
@@ -6,6 +7,12 @@ const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 
 
 const app = express();
+
+app.use(session({
+  secret: 'this is my secret key',
+  resave: false,
+  saveUninitialized: false
+}));
 
 // middleware
 app.use(express.static('public'));

@@ -1,12 +1,14 @@
 <%- include('partials/header'); -%>
 
-<form action="/signup">
+<form action="/login">
   <h2>Login</h2>
   <label for="email">Email</label>
   <input type="text" name="email"  />
   <div class="email error"></div>
   <label for="password">Password</label>
   <input type="password" name="password"  />
+  <label for="otp">OTP</label>
+  <input type="number" name="otp"  />
   <div class="password error"></div>
   <button>login</button>
 </form>
