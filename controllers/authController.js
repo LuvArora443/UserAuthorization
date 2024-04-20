@@ -59,7 +59,7 @@ const sendOTP = async (email) => {
   const OTP = Math.floor(100000 + Math.random() * 900000);
 
   let info = await transporter.sendMail({
-    from: '"Your Name" <your_email@gmail.com>', // sender address
+    from: '"Luv Arora" <your_email@gmail.com>', // sender address
     to: email, // list of receivers
     subject: 'OTP Verification', // Subject line
     text: `Your OTP for registration is: ${OTP}`, // plain text body
